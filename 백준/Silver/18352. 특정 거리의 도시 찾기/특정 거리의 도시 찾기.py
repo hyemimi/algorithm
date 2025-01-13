@@ -19,12 +19,12 @@ for i in range(1,m+1):
 
 
 pq = []
-heapq.heappush(pq,(x,0))
+heapq.heappush(pq,(0,x))
 dist[x] = 0
 
 
 while (pq):
-    node, edge = heapq.heappop(pq)
+    edge, node = heapq.heappop(pq)
     
     # 이미 갱신됨 
     if dist[node] < edge :
@@ -37,7 +37,7 @@ while (pq):
         # 갱신
         if cost < dist[i]:
             dist[i] = cost
-            heapq.heappush(pq,(i,cost))
+            heapq.heappush(pq,(cost,i))
 
 isFind = False
 
