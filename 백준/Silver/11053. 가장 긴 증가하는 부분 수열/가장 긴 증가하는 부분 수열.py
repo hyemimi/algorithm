@@ -1,6 +1,6 @@
 n = int(input())
 arr = list(map(int,input().split()))
-dp = [0] * n
+dp = [1] * n
 
 
 for i in range(1,n):
@@ -9,4 +9,4 @@ for i in range(1,n):
             # 증가
             dp[i] = max(dp[j]+1, dp[i])
 
-print(max(dp)+1)
+print(max(dp))
