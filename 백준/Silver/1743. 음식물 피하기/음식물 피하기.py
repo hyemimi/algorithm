@@ -17,8 +17,7 @@ dy = [0,1,0,-1]
 def BFS(x,y):
     queue = deque()
     queue.append((x,y))
-    check = [[0]*(m+1) for _ in range(n+1)]
-    check[x][y] = 1
+    board[x][y] = 0
     cnt = 1
 
     while(len(queue) > 0):
@@ -29,8 +28,8 @@ def BFS(x,y):
             na = dx[i] + a
             nb = dy[i] + b
 
-            if 1<=na<=n and 1<=nb<=m and check[na][nb] == 0 and board[na][nb] == 1 :
-                check[na][nb] = 1
+            if 1<=na<=n and 1<=nb<=m and board[na][nb] == 1 :
+                board[na][nb] = 0
                 queue.append((na,nb))
                 cnt += 1
    
@@ -41,7 +40,6 @@ ans = 1
 for i in range(1,n+1):
     for j in range(1,m+1):
         if board[i][j] == 1:
-            board[i][j] = 1
             ans = max(BFS(i,j),ans)
 
 print(ans)
