@@ -1,30 +1,29 @@
 function solution(n, computers) {
-    var answer = 0;
-    let ch = Array.from({length:n}, ()=>0) // 방문 체크 배열
+    // 연결 갯수 구하기
+    let answer = 0;
     
-   function BFS (i) {
-       ch[i] = 1
-       queue = []
-       queue.push(i)
-       
-       while (queue.length) {
-           node = queue.shift()
-           
-            for (let j=0; j < n; j++) {
-               if (computers[node][j] === 1 && ch[j] === 0) {
-                   queue.push(j)
-                   ch[j] = 1
-               }
+    ch = Array.from({length:n+1}, () => 0);
+    
+    
+    function DFS(v){
+        ch[v] = 1
+        
+        for (let i=0;i<n;i++) {
+            if (i===v) continue;
+            if (ch[i] != 1 && computers[v][i] == 1) {
+                // 방문한 적 없고, 연결 되어 있다면
+                DFS(i)
             }
-       }
-      
-   }
-  
-    for (let i=0; i<n; i++) {
-         if (ch[i] === 0) {
-            BFS(i);
-            answer += 1;
-         }
+        }
+    }
+    
+    for (let i=0;i<n;i++) {
+        if (ch[i] != 1) {
+            // 방문한 적이 없다면
+            DFS(i)
+            answer += 1
+        }
+        
     }
     
     return answer;
