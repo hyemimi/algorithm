@@ -1,0 +1,11 @@
+-- 코드를 입력하세요
+SELECT 
+    CASE 
+        WHEN PRICE < 10000 then 0
+        ELSE PRICE - (PRICE % 10000) 
+    end
+as "PRICE_GROUP",
+count(*)
+FROM PRODUCT
+GROUP BY PRICE_GROUP
+ORDER BY PRICE_GROUP
