@@ -1,0 +1,17 @@
+-- 코드를 입력하세요
+# 2022-08 ~ 2022-10 까지 총 대여 횟수 5회 이상
+# 일단 5회 이상인 거 세고 -> MONTH+CAR_ID로 GROUP BY?
+
+SELECT 
+    month(START_DATE) as "MONTH", CAR_ID, count(*) as "RECORDS"  
+FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+WHERE  month(START_DATE) in (8,9,10) and CAR_ID in
+(
+    SELECT CAR_ID
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+    where month(START_DATE) in (8,9,10)
+    GROUP BY CAR_ID
+    HAVING count(*) >= 5
+)
+GROUP BY MONTH, CAR_ID
+ORDER BY MONTH ASC, CAR_ID DESC
