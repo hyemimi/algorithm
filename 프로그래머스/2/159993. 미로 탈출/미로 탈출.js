@@ -1,66 +1,62 @@
 function solution(maps) {
     let answer = -1;
-    const n = maps.length;
-    const m = maps[0].length;
-    const queue = [];
     
-    // 미로 탈출 최소 시간
-    // 레버를 당긴 후 출입문으로 이동해야 함
-    // 따라서, 레버 당김 여부를 3차원 배열로 관리
+    // 레버를 먼저 당기고 출구로 이동
+    // 최소 시간
+    // 방문 여부 + 레버 여부 같이 체크
     
+    const n = maps.length
+    const m = maps[0].length
     
-const visited = Array.from(Array(n), () => Array(m).fill(false).map(() => Array(2).fill(false)))
-let endX = -1;
-let endY = -1;
+    const visited = Array.from({length: n+1}, () => Array.from({length:m+1}, () => Array(2).fill(0)))
 
-    // 시작, 종료 지점 탐색
+    const dx = [-1,1,0,0]
+    const dy = [0,0,1,-1]
+    
+    const queue = []
+    
+    // maps 순회 -> 시작지점, 레버지점, 출구 확인
     for (let i=0; i<n; i++) {
         for (let j=0; j<m; j++) {
             if (maps[i][j] === 'S') {
-                queue.push([i,j,0,0]) // x, y, 레버 여부, 시간
-                visited[i][j][0] = true;
+                queue.push([i,j,0,0])
             }
-            else if (maps[i][j] === 'E') {
-                endX = i;
-                endY = j;
+        }
+    }
+
+    let head = 0;
+    
+    while (head < queue.length) {
+        const [x, y, k, time] = queue[head++] // 좌표 x, y, 레버 여부, 최단시간
+        
+        if (maps[x][y] === 'E' && k === 1) {
+            return time
+        }
+        
+        for (const idx of [0,1,2,3]) {
+            const nx = x + dx[idx]
+            const ny = y + dy[idx]
+            
+            if (0<= nx && nx < n && 0<= ny && ny < m && visited[nx][ny][k] === 0 && maps[nx][ny] !== 'X') {
+                
+                
+                if (maps[nx][ny] === 'L') {
+                    visited[nx][ny][1] = 1
+                    queue.push([nx,ny,1,time + 1])
+                    continue
+                }
+                
+                if (maps[nx][ny] !== 'X') {
+                    visited[nx][ny][k] = 1
+                    queue.push([nx,ny,k,time + 1])
+                }
+
             }
+            
         }
     }
     
-const dx = [-1,0,1,0]
-const dy = [0,1,0,-1]
-
-    while(queue.length > 0) {
-        const [x, y, k, time] = queue.shift();
-        
-        if (x === endX && y === endY && k === 1) {
-            // 도착
-            answer = time;
-            break;
-        }
-        
-        for (let s=0; s<4; s++) {
-            
-            const nx = x + dx[s];
-            const ny = y + dy[s];
-
-            if (0<= nx &&  nx < n && 0<= ny && ny <m  && maps[nx][ny] === 'L' && visited[nx][ny][k] ===false) {
-                visited[nx][ny][1] = true;
-                queue.push([nx,ny,1,time + 1]);
-            }
-            
-            if (0<= nx &&  nx < n && 0<= ny && ny <m && maps[nx][ny] !== 'X' && visited[nx][ny][k] === false) {
-                // 이동 가능
-                visited[nx][ny][k] = true;
-                queue.push([nx,ny,k, time + 1])
-                
-            }
-        }
-        
-        
-    }
-  
-
+    
     
     return answer;
     
