@@ -1,8 +1,9 @@
 -- 코드를 입력하세요
-SELECT a.CATEGORY, a.MAX_PRICE, p.PRODUCT_NAME
-FROM (SELECT CATEGORY, max(PRICE) as "MAX_PRICE" FROM FOOD_PRODUCT
+SELECT c.CATEGORY, c.MAX_PRICE, f.PRODUCT_NAME
+FROM (SELECT CATEGORY, max(price) as "MAX_PRICE"
+      FROM FOOD_PRODUCT 
+      WHERE CATEGORY IN ('과자', '국', '김치', '식용유') 
       GROUP BY CATEGORY
-       HAVING CATEGORY IN ('과자', '국', '김치', '식용유') )
-      a JOIN FOOD_PRODUCT p 
-ON a.category = p.category and a.MAX_PRICE = p.price
-ORDER BY MAX_PRICE DESC
+     ) c JOIN FOOD_PRODUCT f
+     ON c.CATEGORY = f.CATEGORY and c.MAX_PRICE = f.PRICE
+ORDER BY c.MAX_PRICE DESC
