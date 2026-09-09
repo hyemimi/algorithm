@@ -1,0 +1,11 @@
+-- 코드를 입력하세요
+SELECT b.CATEGORY, sum(s.SALES) as "TOTAL_SALES"
+FROM (
+    SELECT *
+    FROM BOOK_SALES
+    WHERE year(SALES_DATE) = '2022' and month(SALES_DATE) = '1'
+     ) s 
+JOIN BOOK b ON s.BOOK_ID = b.BOOK_ID
+GROUP BY b.CATEGORY
+ORDER BY b.CATEGORY
+     
