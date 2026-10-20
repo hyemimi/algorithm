@@ -1,14 +1,8 @@
-SELECT distinct c.CAR_ID
-FROM CAR_RENTAL_COMPANY_CAR c JOIN (
-    SELECT CAR_ID, 
-    max(
-    case when month(START_DATE) = 10 then 1
-    ELSE 0
-    end 
-    ) as "October"
+SELECT Distinct c.CAR_ID
+FROM (
+    SELECT CAR_ID
     FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
-    GROUP BY CAR_ID
-) h
-ON c.CAR_ID = h.CAR_ID 
-WHERE  c.CAR_TYPE='세단' and h.October = 1
+    WHERE month(START_DATE) = 10 ) h JOIN 
+    CAR_RENTAL_COMPANY_CAR c 
+    ON h.CAR_ID = c.CAR_ID and c.CAR_TYPE = '세단'
 ORDER BY c.CAR_ID DESC
